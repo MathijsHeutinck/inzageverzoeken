@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inzageverzoeken.nl – AVG-inzageverzoeken voor gemeenten</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #E8531A;
+      --dark: #1A1A1A;
+      --mid: #555;
+      --light-bg: #F7F7F5;
+      --white: #ffffff;
+      --border: #E2E2DC;
+    }
+
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      color: var(--dark);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ─────────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .nav-logo {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--dark);
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--orange); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.875rem;
+      color: var(--mid);
+    }
+
+    .nav-links a:hover { color: var(--dark); }
+
+    .nav-cta {
+      background: var(--orange);
+      color: var(--white) !important;
+      padding: 0.5rem 1.25rem;
+      border-radius: 4px;
+      font-weight: 600;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.875rem;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .nav-cta:hover { opacity: 0.88; color: var(--white) !important; }
+
+    /* ── SHARED ──────────────────────────────────────────── */
+    section { padding: 80px 5%; }
+
+    .label {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: clamp(1.6rem, 3vw, 2.25rem);
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+
+    h3 {
+      font-size: clamp(1.25rem, 2.5vw, 1.6rem);
+      line-height: 1.3;
+      letter-spacing: -0.015em;
+    }
+
+    p {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 1rem;
+      color: var(--mid);
+      line-height: 1.7;
+    }
+
+    .highlight { color: var(--orange); }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .two-col.reverse { direction: rtl; }
+    .two-col.reverse > * { direction: ltr; }
+
+    .image-placeholder {
+      background: var(--light-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 280px;
+      color: #aaa;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.875rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.75rem;
+      border-radius: 4px;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .btn-primary {
+      background: var(--orange);
+      color: var(--white);
+    }
+
+    .btn-primary:hover { opacity: 0.88; }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--dark);
+      border: 1.5px solid var(--dark);
+      margin-left: 1rem;
+    }
+
+    .btn-secondary:hover { background: var(--dark); color: var(--white); }
+
+    /* ── HERO ────────────────────────────────────────────── */
+    #hero {
+      background: var(--white);
+      padding-top: 72px;
+      padding-bottom: 72px;
+    }
+
+    #hero .two-col { gap: 5rem; }
+
+    #hero .eyebrow {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 1rem;
+    }
+
+    #hero h1 { margin-bottom: 1.25rem; }
+
+    #hero .subhead {
+      font-size: 1.0625rem;
+      color: var(--mid);
+      margin-bottom: 2rem;
+      max-width: 480px;
+    }
+
+    #hero .subhead strong { color: var(--dark); font-weight: 600; }
+
+    .cta-group { margin-top: 2rem; }
+
+    /* ── TRUSTED ─────────────────────────────────────────── */
+    #trusted {
+      background: var(--light-bg);
+      padding: 40px 5%;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    #trusted p {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 1.5rem;
+    }
+
+    .trusted-logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .trusted-logos span {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #aaa;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── PROBLEM ─────────────────────────────────────────── */
+    #problem {
+      background: var(--white);
+    }
+
+    #problem .section-header {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 4rem;
+    }
+
+    #problem h2 { margin-bottom: 1rem; }
+
+    .problem-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .problem-card {
+      background: var(--light-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+    }
+
+    .problem-card .number {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 0.75rem;
+    }
+
+    .problem-card h3 {
+      font-size: 1.0625rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .problem-card p { font-size: 0.9375rem; }
+
+    .problem-card .quote {
+      margin-top: 1.25rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.875rem;
+      font-style: italic;
+      color: var(--mid);
+    }
+
+    /* ── SOLUTION INTRO ──────────────────────────────────── */
+    #solution-intro {
+      background: var(--dark);
+      color: var(--white);
+      text-align: center;
+    }
+
+    #solution-intro .inner {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    #solution-intro .label { color: var(--orange); }
+
+    #solution-intro h2 {
+      color: var(--white);
+      margin-bottom: 1.25rem;
+    }
+
+    #solution-intro h2 .highlight { color: var(--orange); }
+
+    #solution-intro p {
+      color: rgba(255,255,255,0.7);
+      font-size: 1.0625rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ── VALUE PROPS ─────────────────────────────────────── */
+    .vp-section { background: var(--white); }
+    .vp-section:nth-child(even) { background: var(--light-bg); }
+
+    .vp-section .step-num {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 0.5rem;
+    }
+
+    .vp-section h3 {
+      color: var(--dark);
+      margin-bottom: 1rem;
+    }
+
+    .vp-section h3 .highlight { color: var(--orange); }
+
+    .vp-section p { margin-bottom: 1rem; max-width: 460px; }
+
+    .vp-section p strong { color: var(--dark); font-weight: 600; }
+
+    .feature-list {
+      list-style: none;
+      margin-top: 1.25rem;
+    }
+
+    .feature-list li {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.9375rem;
+      color: var(--mid);
+      padding: 0.4rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .feature-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--orange);
+      font-weight: 700;
+    }
+
+    /* ── CTA SECTION ─────────────────────────────────────── */
+    #cta {
+      background: var(--orange);
+      text-align: center;
+      padding: 80px 5%;
+    }
+
+    #cta h2 {
+      color: var(--white);
+      margin-bottom: 1rem;
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #cta p {
+      color: rgba(255,255,255,0.85);
+      font-size: 1.0625rem;
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+    }
+
+    #cta .btn-white {
+      background: var(--white);
+      color: var(--orange);
+      padding: 0.85rem 2rem;
+      border-radius: 4px;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-block;
+      transition: opacity 0.15s;
+    }
+
+    #cta .btn-white:hover { opacity: 0.9; }
+
+    #cta .btn-ghost {
+      display: inline-block;
+      margin-left: 1rem;
+      padding: 0.85rem 2rem;
+      border-radius: 4px;
+      border: 2px solid rgba(255,255,255,0.6);
+      color: var(--white);
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    #cta .btn-ghost:hover { border-color: var(--white); background: rgba(255,255,255,0.1); }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.5);
+      padding: 32px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.8125rem;
+    }
+
+    footer a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+    }
+
+    footer a:hover { color: var(--white); }
+
+    footer .footer-brand {
+      font-weight: 700;
+      color: var(--white);
+      font-size: 0.9rem;
+    }
+
+    footer .footer-brand span { color: var(--orange); }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .two-col { grid-template-columns: 1fr; gap: 2.5rem; }
+      .two-col.reverse { direction: ltr; }
+      .problem-cards { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .btn-secondary { margin-left: 0; margin-top: 0.75rem; }
+      .cta-group { display: flex; flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+      #cta .btn-ghost { margin-left: 0; margin-top: 0.75rem; display: block; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Inzageverzoeken<span>.nl</span></a>
+  <ul class="nav-links">
+    <li><a href="#problem">Het probleem</a></li>
+    <li><a href="#solution-intro">De aanpak</a></li>
+    <li><a href="#cta" class="nav-cta">Plan een gesprek</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="two-col">
+    <div>
+      <p class="eyebrow">Voor managers juridische zaken bij gemeenten</p>
+      <h1>Stop met worstelen met<br /><span class="highlight">AVG-inzageverzoeken.</span></h1>
+      <p class="subhead">
+        Werk samen met <strong>gespecialiseerde AVG-juristen</strong> die de regie over uw inzageverzoeken volledig overnemen — van coördinatie met afdelingen tot aan het besluit — zodat uw team zich kan focussen op wat écht telt.
+      </p>
+      <div class="cta-group">
+        <a href="#cta" class="btn btn-primary">Plan een gesprek</a>
+        <a href="#solution-intro" class="btn btn-secondary">Verken de aanpak</a>
+      </div>
+    </div>
+    <div class="image-placeholder" style="min-height:340px;">
+      Afbeelding
+    </div>
+  </div>
+</section>
+
+<!-- TRUSTED -->
+<div id="trusted">
+  <p>Vertrouwd door gemeenten</p>
+  <div class="trusted-logos">
+    <span>Gemeente A</span>
+    <span>Gemeente B</span>
+    <span>Gemeente C</span>
+    <span>Gemeente D</span>
+    <span>Gemeente E</span>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="section-header">
+    <p class="label">Het probleem</p>
+    <h2>Inzageverzoeken kosten uw team <span class="highlight">tijd die u niet heeft.</span></h2>
+    <p>Burgers hebben het recht om hun persoonsgegevens op te vragen. Maar voor uw juridische team betekent elk verzoek een extra last — bovenop een agenda die al vol zit.</p>
+  </div>
+  <div class="problem-cards">
+    <div class="problem-card">
+      <p class="number">Probleem 1</p>
+      <h3>Extra workload op een team met achterstanden</h3>
+      <p>Elk inzageverzoek landt als onverwachte druk op uw juridische afdeling. Het leidt af van hoofdzaken — terwijl er op die hoofdzaken al achterstanden zijn.</p>
+      <p class="quote">"We lopen al achter op onze kerntaken. Dan komt hier ook nog eens dit bij."</p>
+    </div>
+    <div class="problem-card">
+      <p class="number">Probleem 2</p>
+      <h3>Afdelingen weten niet wat ze moeten doen</h3>
+      <p>De informatie ligt verspreid over uw organisatie. Collega's op andere afdelingen zijn opgeleid voor hun eigen werk — niet voor het correct uitvoeren van een AVG-inzageverzoek.</p>
+      <p class="quote">"Wij weten echt niet wat we hiermee aan moeten. Dat is toch jullie werk?"</p>
+    </div>
+    <div class="problem-card">
+      <p class="number">Probleem 3</p>
+      <h3>Eén maand. Geen uitzonderingen.</h3>
+      <p>De AVG stelt strikte termijnen: een verzoek moet binnen vier weken afgehandeld zijn. Overschrijding leidt tot klachten bij de AP — of erger: een boete.</p>
+      <p class="quote">"We weten dat we de termijn naderen, maar we krijgen geen antwoord van de afdeling."</p>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION INTRO -->
+<section id="solution-intro">
+  <div class="inner">
+    <p class="label">De oplossing</p>
+    <h2>Inzageverzoeken.nl <span class="highlight">neemt de regie</span> volledig over — in drie stappen</h2>
+    <p>Wij ontzorgen uw gemeente van A tot Z: van het eerste contact met de burger tot aan het ondertekende besluit. Uw team hoeft alleen nog te tekenen.</p>
+  </div>
+</section>
+
+<!-- VALUE PROP 1 -->
+<section class="vp-section" id="vp1">
+  <div class="two-col" style="max-width:1100px;margin:0 auto;">
+    <div>
+      <p class="step-num">Stap 1</p>
+      <h3><span class="highlight">Coördinatie met afdelingen</span><br />— zonder dat u erbij hoeft te zijn</h3>
+      <p>Wij nemen direct contact op met de betrokken afdelingen binnen uw gemeente. We begeleiden hen met heldere, begrijpelijke instructies zodat zij precies weten welke informatie ze moeten aanleveren en hoe.</p>
+      <p><strong>Geen interne escalaties meer.</strong> Wij bewaken de voortgang, sturen na waar nodig en zorgen dat alles op tijd binnenkomt.</p>
+      <ul class="feature-list">
+        <li>Directe afstemming met alle betrokken afdelingen</li>
+        <li>Duidelijke instructies op maat per afdeling</li>
+        <li>Proactieve bewaking van de voortgang</li>
+      </ul>
+    </div>
+    <div class="image-placeholder">Afbeelding coördinatieproces</div>
+  </div>
+</section>
+
+<!-- VALUE PROP 2 -->
+<section class="vp-section" id="vp2" style="background:var(--light-bg);">
+  <div class="two-col reverse" style="max-width:1100px;margin:0 auto;">
+    <div>
+      <p class="step-num">Stap 2</p>
+      <h3><span class="highlight">Juridisch correcte toetsing</span><br />en controle van de documenten</h3>
+      <p>Onze AVG-juristen beoordelen alle aangeleverde informatie. We toetsen de grondslag van anonimisering, controleren of persoonsgegevens van derden correct zijn afgeschermd en zorgen dat het dossier voldoet aan de wettelijke eisen.</p>
+      <p><strong>Geen juridisch risico voor uw gemeente.</strong> Wij staan in voor de inhoudelijke kwaliteit van elk besluit.</p>
+      <ul class="feature-list">
+        <li>Toetsing grondslag en rechtmatigheid anonimisering</li>
+        <li>Controle op correcte anonimisering van persoonsgegevens</li>
+        <li>Inhoudelijke beoordeling door gespecialiseerde AVG-juristen</li>
+      </ul>
+    </div>
+    <div class="image-placeholder">Afbeelding juridische toetsing</div>
+  </div>
+</section>
+
+<!-- VALUE PROP 3 -->
+<section class="vp-section" id="vp3">
+  <div class="two-col" style="max-width:1100px;margin:0 auto;">
+    <div>
+      <p class="step-num">Stap 3</p>
+      <h3><span class="highlight">Besluit opstellen en termijn bewaken</span><br />— altijd op tijd</h3>
+      <p>Wij stellen het formele besluit op dat voldoet aan alle wettelijke vereisten. We houden de vierweekse termijn van de AVG nauwlettend in de gaten en zorgen dat uw gemeente nooit in verzuim raakt.</p>
+      <p><strong>Geen klachten bij de AP meer.</strong> Uw gemeente leeft de AVG na — zonder dat uw team er wakker van hoeft te liggen.</p>
+      <ul class="feature-list">
+        <li>Opstellen van juridisch correct besluit</li>
+        <li>Strakke bewaking van de wettelijke termijn</li>
+        <li>Dossier compleet en klaar voor ondertekening</li>
+      </ul>
+    </div>
+    <div class="image-placeholder">Afbeelding besluit & termijnbewaking</div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <h2>Klaar om inzageverzoeken van uw agenda te schrappen?</h2>
+  <p>Plan een vrijblijvend gesprek met ons. We bespreken hoe we uw gemeente kunnen ontzorgen — en wat dat concreet betekent voor uw team.</p>
+  <a href="mailto:info@inzageverzoeken.nl" class="btn-white">Plan een gesprek</a>
+  <a href="mailto:info@inzageverzoeken.nl?subject=Offerte%20aanvraag" class="btn-ghost">Vraag een offerte aan</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <span class="footer-brand">Inzageverzoeken<span>.nl</span></span><br />
+    <span>Een initiatief van <a href="https://www.ghglegal.nl" target="_blank" rel="noopener">GHG Legal</a></span>
+  </div>
+  <div>
+    <a href="mailto:info@inzageverzoeken.nl">info@inzageverzoeken.nl</a>
+    &nbsp;·&nbsp;
+    <a href="#">Privacyverklaring</a>
+  </div>
+</footer>
+
+</body>
+</html>
